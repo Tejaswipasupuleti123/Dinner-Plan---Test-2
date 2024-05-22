@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinner Plan</title>
+    <style>
+        .error {
+            background-color: #e82513;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Booking Place For Your Dinner!</h1>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+    <br><br>
+
+    <label for="Number">Phone Number:</label>
+    <input type="text" id="Number" name="Number">
+    <br><br>
+
+    <h3>Select a time</h3>
+    <input type="radio" name="ProgramTime" value="05:00">05:00<br></br>
+    <input type="radio" name="ProgramTime" value="06:00">06:00<br></br>
+    <input type="radio" name="ProgramTime" value="07:00">07:00<br></br>
+    <input type="radio" name="ProgramTime" value="08:00">08:00<br></br>
+  
+    <h4>What Would you like to have with us</h4>
+    <input type="checkbox" name="snacks1" value="Starters">Starters<br></br>
+    <input type="checkbox" name="snacks2" value="Main_Course">Main Course<br></br>
+    <input type="checkbox" name="snacks3" value="Desserts">Desserts<br></br>
+    <input type="checkbox" name="snacks4" value="Drinks">Drinks<br></br>
+    
+    <button onclick="tellMyInfo()">Submit</button>
+    <div id="output"></div>
+
+    <script>
+        function tellMyInfo() {
+            var nameInput = document.getElementById("name");
+            var name = nameInput.value.trim(); 
+            
+            if (name === "") {
+                showError(nameInput, "Name is empty.");
+                return;
+            }
+            
+            var nameParts = name.split(" ");
+            if (nameParts.length < 2) {
+                showError(nameInput, "Error: First and last names are required.");
+                return;
+            }
+
+            var numberInput = document.getElementById("Number");
+            var number = numberInput.value.trim(); 
+
+            if (number === "") {
+                showError(numberInput, "Phone number is empty.");
+                return;
+            }
+            
+            if (number.length !== 6) {
+                showError(numberInput, "Phone numbers must have exactly 6 characters.");
+                return;
+            }
+
+            var time = document.querySelector('input[name="ProgramTime"]:checked');
+            
+            if (!time) {
+                showError(nameInput, "Please select a time.");
+                return;
+            }
+            var timeValue = time.value;
+            
+            var snacks = [];
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            for (var i = 0; i < checkboxes.length; i++) {
+                snacks.push(checkboxes[i].value);
+            }
+            var snackItems = snacks.join(", ");
+            
+            var outputDiv = document.getElementById("output"); 
+            
+            outputDiv.innerHTML = "Reservation For: " + name + " Phone: " + number + " at: " + timeValue + " Starters are: " + snackItems + ".";
+            nameInput.classList.remove("error");
+            numberInput.classList.remove("error");
+        }
+
+        function showError(element, message) {
+            var outputDiv = document.getElementById("output");
+            outputDiv.innerHTML = '<span style="color: red;">Error: ' + message + '</span>';
+            element.classList.add("error");
+        }
+
+    </script>
+</body>
+</html>
+
